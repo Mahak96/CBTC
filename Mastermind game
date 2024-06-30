@@ -1,0 +1,74 @@
+#CBTC
+import random
+
+def play_game():
+    print("Welcome to the Mastermind game!")
+    print("Player 1 will set a number for Player 2 to guess.")
+    print("Player 2 will then set a number for Player 1 to guess.")
+    print("Let's begin!")
+
+    # Player 1's turn to set a number
+    player1_number = input("Player 1, enter a multi-digit number for Player 2 to guess: ")
+    print("Player 1 has set the number. Now it's Player 2's turn to guess.")
+
+    # Player 2's turn to guess Player 1's number
+    attempts_player2 = 0
+    while True:
+        guess_player2 = input("Player 2, make your guess: ")
+        attempts_player2 += 1
+
+        if guess_player2 == player1_number:
+            print(f"Player 2 guessed the number {player1_number} correctly in {attempts_player2} attempts! Player 2 wins!")
+            break
+        else:
+            # Provide hint
+            hint = get_hint(player1_number, guess_player2)
+            print(f"Incorrect guess. Here's a hint: {hint}")
+
+    # Player 2's turn to set a number
+    player2_number = input("Player 2, enter a multi-digit number for Player 1 to guess: ")
+    print("Player 2 has set the number. Now it's Player 1's turn to guess.")
+
+    # Player 1's turn to guess Player 2's number
+    attempts_player1 = 0
+    while True:
+        guess_player1 = input("Player 1, make your guess: ")
+        attempts_player1 += 1
+
+        if guess_player1 == player2_number:
+            print(f"Player 1 guessed the number {player2_number} correctly in {attempts_player1} attempts! Player 1 wins!")
+            break
+        else:
+            # Provide hint
+            hint = get_hint(player2_number, guess_player1)
+            print(f"Incorrect guess. Here's a hint: {hint}")
+
+    # Determine the overall winner
+    if attempts_player1 < attempts_player2:
+        print("Player 1 is crowned Mastermind!")
+    elif attempts_player2 < attempts_player1:
+        print("Player 2 is crowned Mastermind!")
+    else:
+        print("It's a tie!")
+
+def get_hint(actual_number, guessed_number):
+    """Returns a hint showing which digits in guessed_number are correct."""
+    hint = []
+    # Determine the length to iterate over (minimum of actual_number and guessed_number)
+    min_length = min(len(actual_number), len(guessed_number))
+    
+    for i in range(min_length):
+        if actual_number[i] == guessed_number[i]:
+            hint.append(actual_number[i])
+        else:
+            hint.append('*')  # Use '*' to indicate incorrect digit position
+    
+    # If actual_number is longer, append '*' for remaining digits
+    if len(actual_number) > min_length:
+        hint.extend(['*'] * (len(actual_number) - min_length))
+    
+    return ' '.join(hint)
+
+
+# Start the game
+play_game()
